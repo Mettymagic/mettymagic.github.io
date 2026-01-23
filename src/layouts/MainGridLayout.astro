@@ -14,6 +14,9 @@ import {
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
 import Layout from "./Layout.astro";
+import { getEntry, render } from "astro:content";
+import Markdown from "@components/misc/Markdown.astro";
+import { pathsEqual, url } from "../utils/url-utils";
 
 interface Props {
 	title?: string;
@@ -39,6 +42,13 @@ const hasBannerLink = !!siteConfig.banner.credit.url;
 const mainPanelTop = siteConfig.banner.enable
 	? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)`
 	: "5.5rem";
+
+const homeContent = await getEntry("spec", "home");
+if (!homeContent) {
+	throw new Error("Home page content not found");
+}
+const { Content } = await render(homeContent);
+const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
 ---
 
 <Layout title={title} banner={banner} description={description} lang={lang} setOGTypeArticle={setOGTypeArticle}>
@@ -83,6 +93,20 @@ const mainPanelTop = siteConfig.banner.enable
             <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation" headings={headings}></SideBar>
 
             <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 overflow-hidden">
+                <!-- Metty addition -->
+                {isHomePage &&
+                <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+                    <div class="card-base z-10 px-9 py-6 relative w-full" style="background-color:rgba(255,255,255,0.12);">
+                        <Markdown class="mt-2">
+                            <Content />
+                        </Markdown>
+                    </div>
+                </div>
+                <br>
+                <hr>
+                <br>
+                }
+                
                 <div id="content-wrapper" class="onload-animation">
                     <!-- the overflow-hidden here prevent long text break the layout-->
                     <!-- make id different from windows.swup global property -->
