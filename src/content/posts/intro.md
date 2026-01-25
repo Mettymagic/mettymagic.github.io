@@ -1,12 +1,9 @@
 ---
 title: Blogposting and Writing To The Void
 published: 2026-01-25
-description: What's the point in writing if nobody's ever going to see it? Let's discuss.
-image: ./img/intro-1.webp
-tags:
-  - Personal
-  - ADHD
-  - LGBTQ
+description: "What's the point in writing if nobody's ever going to see it? Let's discuss."
+image: "./img/intro-1.webp"
+tags: ["Personal"]
 category: Writing
 draft: false
 lang: ""
